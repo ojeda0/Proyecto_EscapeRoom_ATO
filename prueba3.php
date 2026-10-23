@@ -143,7 +143,7 @@ if (isset($_POST['boton_comprobar'])) {
                     <input type="hidden" name="pistas" value="<?php echo $pistasPedidas; ?>">
 
                     <label for="respuesta">Escribe el nombre del monarca:</label>
-                    <input type="text" name="respuesta" id="respuesta" placeholder="Ej: Juan II...">
+                    <input type="text" name="respuesta" id="respuesta" placeholder="Ej: Juan I...">
 
                     <div class="botones">
                         <button type="submit" name="boton_comprobar" class="boton">Comprobar y escapar</button>

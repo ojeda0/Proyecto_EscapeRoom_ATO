@@ -40,7 +40,7 @@ if (isset($_POST['boton_pista'])) {
 
 }
 
-// comprobamos si el usuario envia una respuesta
+// comprobamos si el usuario envía una respuest
 if (isset($_POST['boton_comprobar'])) {
 
     $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';

@@ -159,14 +159,14 @@ if (isset($_POST['boton_comprobar'])) {
                 <?php echo mostrarMarcadorIntentos($intentos); ?>
             </div>
 
-            <!-- volver al inicio -->
+            <!-- volver alinicio -->
             <div class="enlace-inicio">
                 <a href="index.php" class="boton-enlace" id="boton-salir">Abandonar y volver al inicio</a>
             </div>
         </div>
     </main>
 
-    <!-- pie de pagina -->
+    <!-- pie de pagina-->
     <footer>
         <p>EscapeRoom - Desarrollo Web en Entorno de Servidor - Abraham Teba Ojeda</p>
     </footer>

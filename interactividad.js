@@ -34,7 +34,7 @@ window.addEventListener('load', function() {
 
     }
 
-    // comprobar que no se envie vacio
+    // comprobar que no se envievacio
     var formularioPrueba = document.getElementById('formulario-prueba');
 
     if (formularioPrueba && campoRespuesta) {

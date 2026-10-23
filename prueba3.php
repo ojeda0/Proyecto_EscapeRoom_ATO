@@ -24,7 +24,7 @@ $pistasPrueba3 = [
     "La respuesta es: Juan II (o Juan II de Castilla)."
 ];
 
-// comprobamos si el usuario ha pulsado el boton de pedirpista
+// comprobamos si el usuario ha pulsado el boton de pedir pista
 if (isset($_POST['boton_pista'])) {
 
     if ($pistasPedidas < count($pistasPrueba3)) {
@@ -42,7 +42,7 @@ if (isset($_POST['boton_pista'])) {
 
 }
 
-// comprobamos si el usuario envia una respuesta
+// comprobamos si el usuario envía una respuesta
 if (isset($_POST['boton_comprobar'])) {
 
     $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
@@ -165,7 +165,7 @@ if (isset($_POST['boton_comprobar'])) {
                     <?php echo mostrarMarcadorIntentos($intentos); ?>
                 </div>
 
-                <!-- volver al inicio -->
+                <!-- volver alinicio -->
                 <div class="enlace-inicio">
                     <a href="index.php" class="boton-enlace" id="boton-salir">Abandonar y volver al inicio</a>
                 </div>
@@ -174,7 +174,7 @@ if (isset($_POST['boton_comprobar'])) {
         </div>
     </main>
 
-    <!-- pie de pagina -->
+    <!-- pie de pagina-->
     <footer>
         <p>EscapeRoom - Desarrollo Web en Entorno de Servidor - Abraham Teba Ojeda</p>
     </footer>

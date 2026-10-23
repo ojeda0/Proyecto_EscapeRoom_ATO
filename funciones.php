@@ -52,7 +52,7 @@ function mostrarPistas($arrayPistas, $totalPistasPedidas){
 
 }
 
-// funcion para pintar los fallos acumulados
+// funcion para pintar los fallos acumulado
 function mostrarMarcadorIntentos($numeroIntentos){
 
     if ($numeroIntentos == 0) {

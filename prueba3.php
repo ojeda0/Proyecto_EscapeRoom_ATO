@@ -1,10 +1,7 @@
 <?php
-// prueba 3: la feria antigua de 1441 y final del juego
-// abraham teba ojeda - 2º daw - ies los alcores
 
 require_once 'funciones.php';
 
-// recogemos los datos enviados por post
 $nombre = isset($_POST['nombre']) ? limpiarTexto($_POST['nombre']) : 'Jugador';
 $intentos = isset($_POST['intentos']) ? (int)$_POST['intentos'] : 0;
 $pistasPedidas = isset($_POST['pistas']) ? (int)$_POST['pistas'] : 0;
@@ -13,7 +10,6 @@ $mensaje = "";
 $tipoMensaje = "";
 $juegoTerminado = false;
 
-// respuestas validas para el tercer enigma
 $solucionesPrueba3 = [
     'juan ii',
     'juan ii de castilla',
@@ -22,44 +18,60 @@ $solucionesPrueba3 = [
     'juan 2'
 ];
 
-// pistas para el enigma del rey de castilla
 $pistasPrueba3 = [
-    "Fue un rey de la dinastía Trastámara en la primera mitad del siglo XV.",
-    "Era el padre de Enrique IV y de la reina Isabel la Católica.",
-    "Se trata del rey Juan II de Castilla."
+    "Rey de la dinastía Trastámara en la primera mitad del siglo XV.",
+    "Padre de Enrique IV y de la reina Isabel la Católica.",
+    "La respuesta es: Juan II (o Juan II de Castilla)."
 ];
 
-// accion de pedir pista
+// comprobamos si el usuario ha pulsado el boton de pedir pista
 if (isset($_POST['btn_pista'])) {
+
     if ($pistasPedidas < count($pistasPrueba3)) {
+
         $pistasPedidas++;
         $mensaje = "Has desbloqueado una nueva pista histórica.";
         $tipoMensaje = "info";
+
     } else {
-        $mensaje = "Ya has usado todas las pistas de esta prueba.";
+
+        $mensaje = "Ya has pedido todas las pistas disponibles.";
         $tipoMensaje = "info";
+
     }
+
 }
 
-// comprobar respuesta enviada
+// comprobamos si el usuario envia una respuesta
 if (isset($_POST['btn_comprobar'])) {
+
     $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
 
     if (empty($respuesta)) {
+
         $mensaje = "Debes escribir una respuesta antes de comprobar.";
         $tipoMensaje = "error";
+
     } else {
+
         if (comprobarSolucion($respuesta, $solucionesPrueba3)) {
+
             $juegoTerminado = true;
             $mensaje = "¡Respuesta correcta! Has identificado al rey Juan II de Castilla.";
             $tipoMensaje = "exito";
+
         } else {
+
             $intentos++;
-            $mensaje = "Respuesta incorrecta. Ese no fue el rey que concedió el privilegio de la feria.";
+            $mensaje = "Respuesta incorrecta. Ese no fue el rey que concedió la feria.";
             $tipoMensaje = "error";
+
         }
+
     }
+
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -74,9 +86,7 @@ if (isset($_POST['btn_comprobar'])) {
     <!-- cabecera -->
     <header>
         <div class="cabecera-info">
-            <span class="autor">Abraham Teba Ojeda</span>
-            <span class="curso">2º DAW</span>
-            <span class="instituto">IES Los Alcores</span>
+            <span>Abraham Teba Ojeda</span> | <span>2º DAW</span> | <span>IES Los Alcores</span>
         </div>
         <h1>Prueba 3: La Feria Antigua de 1441</h1>
     </header>
@@ -89,17 +99,16 @@ if (isset($_POST['btn_comprobar'])) {
             </div>
 
             <?php if ($juegoTerminado): ?>
-                <!-- pantalla final de victoria cuando acierta la prueba 3 -->
                 <div class="pantalla-final">
-                    <h2>🎉 ¡ENHORABUENA, <?php echo strtoupper($nombre); ?>! 🎉</h2>
+                    <h2>¡ENHORABUENA, <?php echo strtoupper($nombre); ?>!</h2>
                     <p class="texto-felicidades">¡Has completado el Escape Room y has conseguido salir del Castillo de Luna!</p>
 
                     <div class="resumen-final">
                         <h3>Resumen cultural aprendido:</h3>
                         <ul>
                             <li><strong>Castillo de Luna:</strong> Restaurado en 1902 por el arqueólogo Jorge Bonsor.</li>
-                            <li><strong>Antonio Mairena:</strong> Recibió la III Llave de Oro del Cante en Córdoba en 1962.</li>
-                            <li><strong>Feria de 1441:</strong> La feria más antigua de Andalucía, concedida por el rey Juan II de Castilla a Pedro Ponce de León.</li>
+                            <li><strong>Antonio Mairena:</strong> Ganó la III Llave de Oro del Cante en Córdoba en 1962.</li>
+                            <li><strong>Feria de 1441:</strong> La más antigua de Andalucía, concedida por el rey Juan II de Castilla a Pedro Ponce de León.</li>
                         </ul>
                     </div>
 
@@ -107,28 +116,24 @@ if (isset($_POST['btn_comprobar'])) {
                 </div>
 
             <?php else: ?>
-                <!-- contenido normal de la prueba 3 -->
                 <h2>El enigma del privilegio rodado</h2>
                 
                 <p>
-                    Has llegado a la última cámara del castillo. Sobre un atril descansa el pergamino que concedió el permiso 
-                    para fundar en Mairena del Alcor la feria más antigua de Andalucía, que comenzó a celebrarse en 1441. 
-                    Para abrir la puerta definitiva a la calle debes responder qué rey de la Corona de Castilla concedió 
-                    dicho privilegio a Pedro Ponce de León.
+                    Llegas a la última sala. Sobre un atril descansa el pergamino que permitió fundar en Mairena 
+                    la feria más antigua de Andalucía (1441). Para abrir la puerta final debes responder qué rey de 
+                    Castilla concedió este privilegio a Pedro Ponce de León.
                 </p>
 
                 <div class="pregunta-box">
                     <p><strong>Pregunta:</strong> ¿Qué rey castellano concedió en 1441 el privilegio para la feria de Mairena?</p>
                 </div>
 
-                <!-- mensajes -->
                 <?php if (!empty($mensaje)): ?>
                     <div class="alerta <?php echo $tipoMensaje; ?>">
                         <?php echo $mensaje; ?>
                     </div>
                 <?php endif; ?>
 
-                <!-- formulario de envio -->
                 <form action="prueba3.php" method="POST" class="formulario" id="form-prueba">
                     <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
@@ -143,7 +148,6 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 </form>
 
-                <!-- pistas pedidas -->
                 <?php if ($pistasPedidas > 0): ?>
                     <div class="caja-pistas">
                         <h3>Pistas obtenidas:</h3>
@@ -151,7 +155,6 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- intentos fallidos -->
                 <div class="caja-intentos">
                     <h3>Historial de intentos:</h3>
                     <?php echo mostrarMarcadorIntentos($intentos); ?>
@@ -167,7 +170,7 @@ if (isset($_POST['btn_comprobar'])) {
 
     <!-- pie de pagina -->
     <footer>
-        <p>EscapeRoom Desarrollo Web en entorno de servidor</p>
+        <p>EscapeRoom - Desarrollo Web en Entorno de Servidor - Abraham Teba Ojeda</p>
     </footer>
 
     <script src="interactividad.js"></script>

@@ -1,6 +1,3 @@
-/* hoja de estilos para la practica de escape room */
-/* abraham teba ojeda - 2º daw - ies los alcores */
-
 * {
     margin: 0;
     padding: 0;
@@ -17,7 +14,7 @@ body {
     flex-direction: column;
 }
 
-/* cabecera sencilla con el nombre y datos del instituto */
+/* cabecera */
 header {
     background-color: #111111;
     border-bottom: 3px solid #c0292b;
@@ -29,14 +26,6 @@ header {
     font-size: 0.9em;
     color: #cccccc;
     margin-bottom: 5px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.cabecera-info .instituto {
-    color: #e67e22;
-    font-weight: bold;
 }
 
 header h1 {
@@ -87,7 +76,7 @@ p {
     margin-bottom: 15px;
 }
 
-/* tarjetas resumen del index */
+/* resumen de pruebas en portada */
 .resumen-pruebas {
     display: flex;
     gap: 15px;
@@ -116,7 +105,7 @@ p {
     margin-bottom: 0;
 }
 
-/* caja destacada con la pregunta */
+/* caja con la pregunta */
 .pregunta-box {
     background-color: #2e261f;
     border: 1px solid #e67e22;
@@ -130,7 +119,7 @@ p {
     color: #ffffff;
 }
 
-/* formularios y campos */
+/* formulario */
 .formulario {
     margin-top: 15px;
 }
@@ -158,7 +147,7 @@ input[type="text"]:focus {
     border-color: #e67e22;
 }
 
-/* botones con los colores del instituto */
+/* botones */
 .botones {
     display: flex;
     gap: 10px;
@@ -190,7 +179,7 @@ input[type="text"]:focus {
     background-color: #4a4a4a;
 }
 
-/* alertas de exito y error */
+/* mensajes */
 .alerta {
     padding: 10px 12px;
     border-radius: 4px;
@@ -216,7 +205,6 @@ input[type="text"]:focus {
     color: #b0d7ff;
 }
 
-/* zona de avance a la siguiente fase */
 .zona-siguiente {
     background-color: #1b2e1e;
     border: 1px solid #2e7d32;
@@ -226,7 +214,7 @@ input[type="text"]:focus {
     text-align: center;
 }
 
-/* lista de pistas desbloqueadas */
+/* pistas */
 .caja-pistas {
     background-color: #1e1e1e;
     border: 1px solid #333333;
@@ -244,7 +232,7 @@ input[type="text"]:focus {
     color: #f0e2cc;
 }
 
-/* caja con el contador de intentos */
+/* intentos */
 .caja-intentos {
     background-color: #1e1e1e;
     border: 1px solid #333333;
@@ -308,7 +296,6 @@ input[type="text"]:focus {
     margin-bottom: 8px;
 }
 
-/* enlace para volver al inicio */
 .enlace-inicio {
     margin-top: 20px;
     text-align: right;
@@ -324,24 +311,24 @@ input[type="text"]:focus {
     color: #c0292b;
 }
 
-/* pie de pagina */
+/* pie de pagina centrado */
 footer {
     background-color: #111111;
     border-top: 1px solid #292929;
-    padding: 12px;
+    padding: 15px;
     text-align: center;
-    font-size: 0.85em;
-    color: #888888;
+    font-size: 0.9em;
+    color: #cccccc;
     margin-top: auto;
 }
 
-/* responsive sencillo para movil */
-@media (max-width: 600px) {
-    .cabecera-info {
-        flex-direction: column;
-        gap: 2px;
-    }
+footer p {
+    margin-bottom: 0;
+    text-align: center;
+}
 
+/* responsive */
+@media (max-width: 600px) {
     .resumen-pruebas {
         flex-direction: column;
     }

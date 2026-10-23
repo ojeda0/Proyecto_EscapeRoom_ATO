@@ -107,12 +107,14 @@ if (isset($_POST['btn_comprobar'])) {
                 <p><strong>Pregunta:</strong> ¿Qué célebre arqueólogo restauró y vivió en el Castillo de Luna?</p>
             </div>
 
+            <!-- mensajes -->
             <?php if (!empty($mensaje)): ?>
                 <div class="alerta <?php echo $tipoMensaje; ?>">
                     <?php echo $mensaje; ?>
                 </div>
             <?php endif; ?>
 
+            <!-- boton para la siguiente fase -->
             <?php if ($acertado): ?>
                 <div class="zona-siguiente">
                     <p>¡Has superado la primera prueba!</p>
@@ -124,6 +126,7 @@ if (isset($_POST['btn_comprobar'])) {
                     </form>
                 </div>
             <?php else: ?>
+                <!-- formulario de respuesta -->
                 <form action="prueba1.php" method="POST" class="formulario" id="form-prueba">
                     <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
@@ -139,6 +142,7 @@ if (isset($_POST['btn_comprobar'])) {
                 </form>
             <?php endif; ?>
 
+            <!-- pistas obtenidas -->
             <?php if ($pistasPedidas > 0): ?>
                 <div class="caja-pistas">
                     <h3>Pistas obtenidas:</h3>
@@ -146,11 +150,13 @@ if (isset($_POST['btn_comprobar'])) {
                 </div>
             <?php endif; ?>
 
+            <!-- intentos fallidos -->
             <div class="caja-intentos">
                 <h3>Historial de intentos:</h3>
                 <?php echo mostrarMarcadorIntentos($intentos); ?>
             </div>
 
+            <!-- volver al inicio -->
             <div class="enlace-inicio">
                 <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
             </div>

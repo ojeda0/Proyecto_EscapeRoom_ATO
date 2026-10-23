@@ -11,7 +11,7 @@ function limpiarTexto($dato){
 
 }
 
-// comprobamos si la respuesta del usuario esta dentro del array de soluciones
+// funcion para comprobar si la respuesta es correcta
 function comprobarSolucion($respuestaUsuario, $solucionesValidas){
 
     $respuestaUsuario = strtolower(trim($respuestaUsuario));
@@ -30,7 +30,7 @@ function comprobarSolucion($respuestaUsuario, $solucionesValidas){
 
 }
 
-// bucle for para sacar las pistas solicitadas
+// funcion para mostrar las pistas solicitadas
 function mostrarPistas($arrayPistas, $totalPistasPedidas){
 
     $salida = "";
@@ -52,7 +52,7 @@ function mostrarPistas($arrayPistas, $totalPistasPedidas){
 
 }
 
-// bucle while para pintar los fallos
+// funcion para pintar los fallos acumulados
 function mostrarMarcadorIntentos($numIntentos){
 
     if ($numIntentos == 0) {

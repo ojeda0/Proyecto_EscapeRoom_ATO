@@ -1,5 +1,7 @@
+// interactividad de la pagina
 window.addEventListener('load', function() {
 
+    // foco en el campo de texto
     var campoRespuesta = document.getElementById('respuesta');
     var campoNombre = document.getElementById('nombre');
 
@@ -13,6 +15,7 @@ window.addEventListener('load', function() {
 
     }
 
+    // confirmacion para volver al inicio
     var btnSalir = document.getElementById('btn-salir');
 
     if (btnSalir) {
@@ -31,6 +34,7 @@ window.addEventListener('load', function() {
 
     }
 
+    // comprobar que no se envie vacio
     var formPrueba = document.getElementById('form-prueba');
 
     if (formPrueba && campoRespuesta) {

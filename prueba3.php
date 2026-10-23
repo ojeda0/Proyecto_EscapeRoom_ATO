@@ -98,6 +98,7 @@ if (isset($_POST['btn_comprobar'])) {
                 <span>Fase: 3 de 3</span>
             </div>
 
+            <!-- pantalla de victoria -->
             <?php if ($juegoTerminado): ?>
                 <div class="pantalla-final">
                     <h2>¡ENHORABUENA, <?php echo strtoupper($nombre); ?>!</h2>
@@ -128,12 +129,14 @@ if (isset($_POST['btn_comprobar'])) {
                     <p><strong>Pregunta:</strong> ¿Qué rey castellano concedió en 1441 el privilegio para la feria de Mairena?</p>
                 </div>
 
+                <!-- mensajes -->
                 <?php if (!empty($mensaje)): ?>
                     <div class="alerta <?php echo $tipoMensaje; ?>">
                         <?php echo $mensaje; ?>
                     </div>
                 <?php endif; ?>
 
+                <!-- formulario de respuesta -->
                 <form action="prueba3.php" method="POST" class="formulario" id="form-prueba">
                     <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
@@ -148,6 +151,7 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 </form>
 
+                <!-- pistas obtenidas -->
                 <?php if ($pistasPedidas > 0): ?>
                     <div class="caja-pistas">
                         <h3>Pistas obtenidas:</h3>
@@ -155,11 +159,13 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 <?php endif; ?>
 
+                <!-- intentos fallidos -->
                 <div class="caja-intentos">
                     <h3>Historial de intentos:</h3>
                     <?php echo mostrarMarcadorIntentos($intentos); ?>
                 </div>
 
+                <!-- volver al inicio -->
                 <div class="enlace-inicio">
                     <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
                 </div>

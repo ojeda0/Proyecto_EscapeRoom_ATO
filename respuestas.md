@@ -1,6 +1,4 @@
-# Respuestas del Escape Room
-
-Para probar rapido las 3 pruebas:
+Respuestas del Escape Room
 
 - Prueba 1: Jorge Bonsor (tambien sirve bonsor o george bonsor)
 - Prueba 2: Llave de oro del cante (o llave de oro)

@@ -1,241 +1,163 @@
 <?php
-/**
- * ============================================================================
- * PROYECTO: ESCAPE ROOM WEB - MAIRENA DEL ALCOR
- * MÓDULO: prueba1.php (Enigma 1: El Castillo de Luna)
- * ALUMNO: 2º DAW - IES Los Alcores (Desarrollo Web en Entorno Servidor)
- * ============================================================================
- * Propósito pedagógico:
- * Gestiona el primer enigma sobre el Castillo de Luna y el arqueólogo Jorge Bonsor.
- * Incluye validación de sesión, control de flujo con condicionales if/else,
- * recepción y saneamiento de datos por POST, bucle foreach para validar respuestas,
- * y bucle for/while para monitorizar intentos fallidos y pistas desveladas.
- */
+// prueba 1: el castillo de luna y jorge bonsor
+// abraham teba ojeda - 2º daw - ies los alcores
 
 require_once 'funciones.php';
 
-// Estructura condicional que asegura que el usuario no acceda sin nombre registrado
-controlarAccesoFase(1);
+// recogemos los datos enviados por post o ponemos valores por defecto
+$nombre = isset($_POST['nombre']) ? limpiarTexto($_POST['nombre']) : 'Jugador';
+$intentos = isset($_POST['intentos']) ? (int)$_POST['intentos'] : 0;
+$pistasPedidas = isset($_POST['pistas']) ? (int)$_POST['pistas'] : 0;
 
-// Obtenemos del array asociativo central los datos del primer desafío
-$bancoEnigmas = obtenerBancoEnigmas();
-$enigma = $bancoEnigmas['prueba1'];
-$clavePrueba = 'prueba1';
+$mensaje = "";
+$tipoMensaje = "";
+$acertado = false;
 
-// Variables locales para gestionar mensajes en la vista
-$mensajeExito = '';
-$mensajeError = '';
-$mensajeInfo  = '';
-$acertado     = false;
+// array con las soluciones correctas aceptadas
+$solucionesPrueba1 = [
+    'jorge bonsor',
+    'george bonsor',
+    'bonsor'
+];
 
-// Comprobamos si la fase ya había sido superada en esta sesión
-if (isset($_SESSION['fase_actual']) && $_SESSION['fase_actual'] > 1) {
-    $acertado = true;
-    $mensajeExito = '¡Ya habías resuelto este enigma previamente! Puedes avanzar al siguiente reto o repasar la información.';
-}
+// array con las pistas de la prueba 1
+$pistasPrueba1 = [
+    "Nació en Francia pero era de origen británico y dedicó su vida a excavar Los Alcores.",
+    "Compró el Castillo de Luna en ruinas en 1902 para vivir en él y restaurarlo.",
+    "Su apellido da nombre al museo que hay en el castillo: Jorge Bonsor."
+];
 
-// Procesamiento de peticiones POST enviadas por el formulario
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // CASO 1: El usuario solicita una nueva pista cultural
-    if (isset($_POST['accion']) && $_POST['accion'] === 'pedir_pista') {
-        $pistasActuales = solicitarPistaPrueba($clavePrueba);
-        if ($pistasActuales >= 3) {
-            $mensajeInfo = 'Ya has revelado las 3 pistas disponibles para este enigma.';
-        } else {
-            $mensajeInfo = '¡Se ha desvelado una nueva pista histórica para ayudarte!';
-        }
-    }
-
-    // CASO 2: El usuario envía una respuesta para resolver el enigma
-    if (isset($_POST['accion']) && $_POST['accion'] === 'comprobar_respuesta') {
-        $respuestaEnviada = isset($_POST['respuesta']) ? sanearCadena($_POST['respuesta']) : '';
-
-        // Condicional if/else: validamos que el campo no esté vacío
-        if (empty($respuestaEnviada)) {
-            $mensajeError = 'Debes introducir una respuesta antes de girar el mecanismo del cerrojo.';
-        } else {
-            // Llamamos a la función modular que utiliza un bucle foreach para comparar
-            $esValida = comprobarRespuesta($respuestaEnviada, $enigma['respuestas_validas']);
-
-            // Condicional if/else para bifurcar el flujo de evaluación
-            if ($esValida) {
-                $acertado = true;
-                // Si aún estábamos en la fase 1, ascendemos el progreso a la fase 2
-                if ($_SESSION['fase_actual'] === 1) {
-                    $_SESSION['fase_actual'] = 2;
-                }
-                $mensajeExito = '¡ENHORABUENA! Has descifrado la memoria de Jorge Bonsor. El portón del Castillo de Luna se abre con un crujido ancestral permitiéndote el paso hacia las caballerizas.';
-            } else {
-                // Registramos el fallo en las estructuras de sesión mediante función
-                registrarIntentoFallido($clavePrueba, $respuestaEnviada);
-                $mensajeError = 'La cerradura no cede. "' . htmlspecialchars($respuestaEnviada, ENT_QUOTES, 'UTF-8') . '" no es la respuesta correcta para este baluarte. Revisa la historia del castillo o solicita una pista.';
-            }
-        }
+// comprobamos si el usuario ha pulsado el boton de pedir pista
+if (isset($_POST['btn_pista'])) {
+    if ($pistasPedidas < count($pistasPrueba1)) {
+        $pistasPedidas++;
+        $mensaje = "Has desbloqueado una nueva pista.";
+        $tipoMensaje = "info";
+    } else {
+        $mensaje = "Ya has pedido todas las pistas disponibles.";
+        $tipoMensaje = "info";
     }
 }
 
-// Variables de estado leídas de la sesión nativa
-$totalIntentos = isset($_SESSION['intentos'][$clavePrueba]) ? $_SESSION['intentos'][$clavePrueba] : 0;
-$pistasUsadas  = isset($_SESSION['pistas_usadas'][$clavePrueba]) ? $_SESSION['pistas_usadas'][$clavePrueba] : 0;
-$historial     = isset($_SESSION['historial_fallos'][$clavePrueba]) ? $_SESSION['historial_fallos'][$clavePrueba] : [];
+// comprobamos si el usuario ha enviado una respuesta
+if (isset($_POST['btn_comprobar'])) {
+    $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
+
+    // condicion if para comprobar si el campo esta vacio
+    if (empty($respuesta)) {
+        $mensaje = "Debes escribir una respuesta antes de comprobar.";
+        $tipoMensaje = "error";
+    } else {
+        // llamamos a la funcion que tiene el bucle foreach para validar
+        if (comprobarSolucion($respuesta, $solucionesPrueba1)) {
+            $acertado = true;
+            $mensaje = "¡Correcto! Jorge Bonsor restauró el castillo en 1902. El portón se abre.";
+            $tipoMensaje = "exito";
+        } else {
+            $intentos++;
+            $mensaje = "Respuesta incorrecta. Ese no es el arqueólogo del castillo.";
+            $tipoMensaje = "error";
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba 1: El Castillo de Luna | Escape Room IES Los Alcores</title>
+    <title>Prueba 1: Castillo de Luna | Escape Room</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
-    <!-- Encabezado con estado del jugador y cronómetro -->
-    <header class="cabecera-principal">
-        <div class="contenedor-cabecera">
-            <div class="logo-instituto">
-                <span class="siglas-instituto">IES LOS ALCORES</span>
-                <span class="ciclo-daw">2º DAW · DWES</span>
-            </div>
-            <div class="barra-estado-jugador">
-                <span class="info-jugador">👤 Explorador: <strong><?php echo htmlspecialchars($_SESSION['jugador'], ENT_QUOTES, 'UTF-8'); ?></strong></span>
-                <span class="cronometro" id="reloj-tiempo">⏱ Tiempo: <?php echo calcularTiempoTranscurrido(); ?></span>
-            </div>
+    <!-- cabecera -->
+    <header>
+        <div class="cabecera-info">
+            <span class="autor">Abraham Teba Ojeda</span>
+            <span class="curso">2º DAW</span>
+            <span class="instituto">IES Los Alcores</span>
         </div>
+        <h1>Prueba 1: El Castillo de Luna</h1>
     </header>
 
-    <!-- Barra de progreso visual del Escape Room -->
-    <nav class="barra-fases" aria-label="Progreso del juego">
-        <div class="paso-fase activa">
-            <span class="paso-numero">1</span>
-            <span class="paso-texto">Castillo de Luna</span>
-        </div>
-        <div class="paso-fase <?php echo ($_SESSION['fase_actual'] >= 2) ? 'desbloqueada' : 'bloqueada'; ?>">
-            <span class="paso-numero">2</span>
-            <span class="paso-texto">Antonio Mairena</span>
-        </div>
-        <div class="paso-fase <?php echo ($_SESSION['fase_actual'] >= 3) ? 'desbloqueada' : 'bloqueada'; ?>">
-            <span class="paso-numero">3</span>
-            <span class="paso-texto">Feria de 1441</span>
-        </div>
-    </nav>
-
-    <!-- Contenedor central del juego -->
-    <main class="contenedor-principal">
-
-        <section class="tarjeta-sala">
-            <div class="cabecera-sala">
-                <span class="etiqueta-enigma">Etapa 1 de 3</span>
-                <h2><?php echo htmlspecialchars($enigma['titulo'], ENT_QUOTES, 'UTF-8'); ?></h2>
-                <h3 class="subtitulo-sala"><?php echo htmlspecialchars($enigma['subtitulo'], ENT_QUOTES, 'UTF-8'); ?></h3>
+    <main class="contenedor">
+        <div class="caja">
+            <div class="barra-estado">
+                <span>Jugador: <strong><?php echo $nombre; ?></strong></span>
+                <span>Fase: 1 de 3</span>
             </div>
 
-            <!-- Narrativa inmersiva -->
-            <div class="relato-narrativo">
-                <p><?php echo htmlspecialchars($enigma['relato'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <h2>El enigma del portón medieval</h2>
+            
+            <p>
+                Estás frente a la entrada principal del Castillo de Luna. Para poder cruzar el puente 
+                y entrar al patio de armas tienes que descifrar qué ilustre arqueólogo e hispanista compró 
+                esta fortaleza en el año 1902, salvándola de la ruina y fijando en ella su residencia.
+            </p>
+
+            <div class="pregunta-box">
+                <p><strong>Pregunta:</strong> ¿Qué célebre arqueólogo restauró y vivió en el Castillo de Luna?</p>
             </div>
 
-            <!-- Caja con la pregunta o enigma clave -->
-            <div class="caja-enigma-pregunta">
-                <h4>📜 Desafío del Torreón:</h4>
-                <p class="texto-pregunta"><?php echo htmlspecialchars($enigma['pregunta'], ENT_QUOTES, 'UTF-8'); ?></p>
-            </div>
-
-            <!-- Alertas dinámicas condicionales de respuesta -->
-            <?php if (!empty($mensajeExito)): ?>
-                <div class="mensaje-alerta exito" role="alert">
-                    ✨ <?php echo $mensajeExito; ?>
+            <!-- si hay algun mensaje de exito, error o info lo mostramos -->
+            <?php if (!empty($mensaje)): ?>
+                <div class="alerta <?php echo $tipoMensaje; ?>">
+                    <?php echo $mensaje; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($mensajeError)): ?>
-                <div class="mensaje-alerta error" role="alert">
-                    ❌ <?php echo $mensajeError; ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($mensajeInfo)): ?>
-                <div class="mensaje-alerta info" role="status">
-                    ℹ️ <?php echo htmlspecialchars($mensajeInfo, ENT_QUOTES, 'UTF-8'); ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- Renderizado del medidor de intentos con bucle for -->
-            <?php echo renderizarMedidorIntentosHTML($totalIntentos); ?>
-
-            <!-- Panel de Pistas Desplegable / Interactivo -->
-            <div class="seccion-pistas">
-                <div class="cabecera-seccion-pistas">
-                    <h4>💡 Sistema de Ayuda y Pistas Culturales (<?php echo $pistasUsadas; ?>/3 desbloqueadas)</h4>
-                    <button type="button" class="boton-secundario boton-alternar-pistas" id="btn-toggle-pistas">
-                        👁 Ver / Ocultar Pistas
-                    </button>
-                </div>
-
-                <div class="contenedor-desplegable-pistas" id="caja-pistas-contenido">
-                    <!-- Bucle foreach invocado en la función para renderizar cada pista -->
-                    <?php echo renderizarListaPistasHTML($enigma['pistas'], $pistasUsadas); ?>
-
-                    <?php if ($pistasUsadas < 3 && !$acertado): ?>
-                        <form action="prueba1.php" method="POST" class="form-pista">
-                            <input type="hidden" name="accion" value="pedir_pista">
-                            <button type="submit" class="boton-alerta">
-                                🔓 Desbloquear siguiente pista
-                            </button>
-                        </form>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Formulario de Respuesta o Botón para Continuar según condicional -->
+            <!-- si ha acertado mostramos el boton para pasar a la prueba 2 -->
             <?php if ($acertado): ?>
-                <div class="zona-siguiente-fase">
-                    <p class="texto-felicidades">¡Camino despejado hacia el siguiente monumento mairenense!</p>
-                    <a href="prueba2.php" class="boton-primario boton-grande">
-                        Avanzar a la Prueba 2: Antonio Mairena ➔
-                    </a>
+                <div class="zona-siguiente">
+                    <p>¡Has superado la primera prueba!</p>
+                    <form action="prueba2.php" method="POST">
+                        <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
+                        <input type="hidden" name="intentos" value="0">
+                        <input type="hidden" name="pistas" value="0">
+                        <button type="submit" class="btn">Ir a la Prueba 2 (Antonio Mairena)</button>
+                    </form>
                 </div>
             <?php else: ?>
-                <form action="prueba1.php" method="POST" class="formulario-respuesta" id="form-respuesta">
-                    <input type="hidden" name="accion" value="comprobar_respuesta">
-                    
-                    <div class="grupo-campo">
-                        <label for="campo-respuesta">Introduce tu respuesta para abrir el portón:</label>
-                        <input type="text" 
-                               name="respuesta" 
-                               id="campo-respuesta" 
-                               placeholder="Escribe el nombre o apellido del arqueólogo..." 
-                               required 
-                               autocomplete="off">
-                    </div>
+                <!-- formulario para enviar la respuesta o pedir pista por POST -->
+                <form action="prueba1.php" method="POST" class="formulario" id="form-prueba">
+                    <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
+                    <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
+                    <input type="hidden" name="pistas" value="<?php echo $pistasPedidas; ?>">
 
-                    <div class="botones-fila">
-                        <button type="submit" class="boton-primario">
-                            🗝 Probar combinación
-                        </button>
+                    <label for="respuesta">Escribe tu respuesta:</label>
+                    <input type="text" name="respuesta" id="respuesta" placeholder="Nombre o apellido del arqueólogo...">
+
+                    <div class="botones">
+                        <button type="submit" name="btn_comprobar" class="btn">Comprobar respuesta</button>
+                        <button type="submit" name="btn_pista" class="btn btn-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
                     </div>
                 </form>
             <?php endif; ?>
 
-            <!-- Historial de intentos fallidos generado mediante bucle while -->
-            <div class="seccion-historial">
-                <h4>📜 Registro de combinaciones fallidas en esta puerta:</h4>
-                <?php echo renderizarHistorialFallosHTML($historial); ?>
+            <!-- zona donde se van mostrando las pistas que ha pedido el usuario -->
+            <?php if ($pistasPedidas > 0): ?>
+                <div class="caja-pistas">
+                    <h3>Pistas obtenidas:</h3>
+                    <?php echo mostrarPistas($pistasPrueba1, $pistasPedidas); ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- mostramos los fallos acumulados con el bucle while de funciones.php -->
+            <div class="caja-intentos">
+                <h3>Historial de intentos:</h3>
+                <?php echo mostrarMarcadorIntentos($intentos); ?>
             </div>
 
-            <!-- Pie de la sala: abandonar y reiniciar -->
-            <div class="sala-pie-acciones">
-                <a href="index.php?accion=reiniciar" class="enlace-reiniciar boton-reiniciar-confirm">
-                    ↻ Rendirse y reiniciar la partida
-                </a>
+            <div class="enlace-inicio">
+                <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
             </div>
-
-        </section>
-
+        </div>
     </main>
 
-    <footer class="pie-pagina">
-        <p>IES Los Alcores · 2º DAW · Desarrollo Web en Entorno Servidor · Escape Room Mairena</p>
+    <!-- pie de pagina -->
+    <footer>
+        <p>EscapeRoom Desarrollo Web en entorno de servidor</p>
     </footer>
 
     <script src="interactividad.js"></script>

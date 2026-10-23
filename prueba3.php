@@ -1,97 +1,62 @@
 <?php
-/**
- * ============================================================================
- * PROYECTO: ESCAPE ROOM WEB - MAIRENA DEL ALCOR
- * MÓDULO: prueba3.php (Enigma 3: La Feria Antigua de 1441 y Pantalla Final)
- * ALUMNO: 2º DAW - IES Los Alcores (Desarrollo Web en Entorno Servidor)
- * ============================================================================
- * Propósito pedagógico:
- * Desafío final del Escape Room enfocado en el origen histórico de la Feria de 1441.
- * Aplica control condicional estricto de acceso (impide el acceso directo sin
- * superar las fases 1 y 2), validación mediante bucle foreach, cálculo de métricas
- * finales con bucles sobre arrays asociativos y despliegue de la pantalla de victoria.
- */
+// prueba 3: la feria antigua de 1441 y final del juego
+// abraham teba ojeda - 2º daw - ies los alcores
 
 require_once 'funciones.php';
 
-// Estructura condicional: valida que el usuario superó las fases 1 y 2
-controlarAccesoFase(3);
+// recogemos los datos enviados por post
+$nombre = isset($_POST['nombre']) ? limpiarTexto($_POST['nombre']) : 'Jugador';
+$intentos = isset($_POST['intentos']) ? (int)$_POST['intentos'] : 0;
+$pistasPedidas = isset($_POST['pistas']) ? (int)$_POST['pistas'] : 0;
 
-// Obtenemos los datos del tercer y definitivo enigma
-$bancoEnigmas = obtenerBancoEnigmas();
-$enigma = $bancoEnigmas['prueba3'];
-$clavePrueba = 'prueba3';
+$mensaje = "";
+$tipoMensaje = "";
+$juegoTerminado = false;
 
-// Variables locales
-$mensajeExito = '';
-$mensajeError = '';
-$mensajeInfo  = '';
-$juegoSuperado = false;
+// respuestas validas para el tercer enigma
+$solucionesPrueba3 = [
+    'juan ii',
+    'juan ii de castilla',
+    'rey juan ii',
+    'el rey juan ii',
+    'juan 2'
+];
 
-// Comprobamos si la fase final ya había sido completada en la sesión
-if (isset($_SESSION['fase_actual']) && $_SESSION['fase_actual'] >= 4) {
-    $juegoSuperado = true;
-}
+// pistas para el enigma del rey de castilla
+$pistasPrueba3 = [
+    "Fue un rey de la dinastía Trastámara en la primera mitad del siglo XV.",
+    "Era el padre de Enrique IV y de la reina Isabel la Católica.",
+    "Se trata del rey Juan II de Castilla."
+];
 
-// Procesamiento del formulario POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // CASO 1: Solicitud de pista
-    if (isset($_POST['accion']) && $_POST['accion'] === 'pedir_pista') {
-        $pistasActuales = solicitarPistaPrueba($clavePrueba);
-        if ($pistasActuales >= 3) {
-            $mensajeInfo = 'Has consultado todas las pistas disponibles para la Feria de 1441.';
-        } else {
-            $mensajeInfo = '¡Se ha desvelado una pista sobre los monarcas de la Corona de Castilla!';
-        }
-    }
-
-    // CASO 2: Validación de la respuesta del usuario
-    if (isset($_POST['accion']) && $_POST['accion'] === 'comprobar_respuesta') {
-        $respuestaEnviada = isset($_POST['respuesta']) ? sanearCadena($_POST['respuesta']) : '';
-
-        // Condicional if/else para validar el envío
-        if (empty($respuestaEnviada)) {
-            $mensajeError = 'Introduce el nombre del rey de Castilla para abrir el arcón.';
-        } else {
-            // Función con bucle foreach para cotejar la solución
-            $esValida = comprobarRespuesta($respuestaEnviada, $enigma['respuestas_validas']);
-
-            if ($esValida) {
-                // El jugador supera el Escape Room completo
-                $_SESSION['fase_actual'] = 4;
-                $juegoSuperado = true;
-                $mensajeExito = '¡EXTRAORDINARIO! Has identificado a Juan II de Castilla. El pergamino de 1441 libera la cerradura definitiva y el portón del castillo se abre de par en par hacia el exterior.';
-            } else {
-                registrarIntentoFallido($clavePrueba, $respuestaEnviada);
-                $mensajeError = 'El sello real no encaja. "' . htmlspecialchars($respuestaEnviada, ENT_QUOTES, 'UTF-8') . '" no fue el monarca que concedió el privilegio de la feria franca a Pedro Ponce de León en 1441.';
-            }
-        }
+// accion de pedir pista
+if (isset($_POST['btn_pista'])) {
+    if ($pistasPedidas < count($pistasPrueba3)) {
+        $pistasPedidas++;
+        $mensaje = "Has desbloqueado una nueva pista histórica.";
+        $tipoMensaje = "info";
+    } else {
+        $mensaje = "Ya has usado todas las pistas de esta prueba.";
+        $tipoMensaje = "info";
     }
 }
 
-// Variables de estado de la prueba 3
-$totalIntentos = isset($_SESSION['intentos'][$clavePrueba]) ? $_SESSION['intentos'][$clavePrueba] : 0;
-$pistasUsadas  = isset($_SESSION['pistas_usadas'][$clavePrueba]) ? $_SESSION['pistas_usadas'][$clavePrueba] : 0;
-$historial     = isset($_SESSION['historial_fallos'][$clavePrueba]) ? $_SESSION['historial_fallos'][$clavePrueba] : [];
+// comprobar respuesta enviada
+if (isset($_POST['btn_comprobar'])) {
+    $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
 
-// BUCLES PARA ESTADÍSTICAS FINALES:
-// Si el juego ha sido superado, calculamos los totales acumulados recorriendo los arrays
-$totalFallosGlobales = 0;
-$totalPistasGlobales = 0;
-
-if ($juegoSuperado) {
-    // Bucle foreach para sumar los fallos cometidos en todas las pruebas
-    if (isset($_SESSION['intentos']) && is_array($_SESSION['intentos'])) {
-        foreach ($_SESSION['intentos'] as $nombreFase => $numFallos) {
-            $totalFallosGlobales += (int)$numFallos;
-        }
-    }
-
-    // Bucle foreach para sumar las pistas consumidas en todo el juego
-    if (isset($_SESSION['pistas_usadas']) && is_array($_SESSION['pistas_usadas'])) {
-        foreach ($_SESSION['pistas_usadas'] as $nombreFase => $numPistas) {
-            $totalPistasGlobales += (int)$numPistas;
+    if (empty($respuesta)) {
+        $mensaje = "Debes escribir una respuesta antes de comprobar.";
+        $tipoMensaje = "error";
+    } else {
+        if (comprobarSolucion($respuesta, $solucionesPrueba3)) {
+            $juegoTerminado = true;
+            $mensaje = "¡Respuesta correcta! Has identificado al rey Juan II de Castilla.";
+            $tipoMensaje = "exito";
+        } else {
+            $intentos++;
+            $mensaje = "Respuesta incorrecta. Ese no fue el rey que concedió el privilegio de la feria.";
+            $tipoMensaje = "error";
         }
     }
 }
@@ -101,207 +66,108 @@ if ($juegoSuperado) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $juegoSuperado ? '¡Victoria! Escape Room Completado' : 'Prueba 3: La Feria de 1441'; ?> | IES Los Alcores</title>
+    <title>Prueba 3: La Feria de 1441 | Escape Room</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
-    <!-- Encabezado con estado del jugador y cronómetro -->
-    <header class="cabecera-principal">
-        <div class="contenedor-cabecera">
-            <div class="logo-instituto">
-                <span class="siglas-instituto">IES LOS ALCORES</span>
-                <span class="ciclo-daw">2º DAW · DWES</span>
-            </div>
-            <div class="barra-estado-jugador">
-                <span class="info-jugador">👤 Explorador: <strong><?php echo htmlspecialchars($_SESSION['jugador'], ENT_QUOTES, 'UTF-8'); ?></strong></span>
-                <span class="cronometro" id="reloj-tiempo">⏱ Tiempo: <?php echo calcularTiempoTranscurrido(); ?></span>
-            </div>
+    <!-- cabecera -->
+    <header>
+        <div class="cabecera-info">
+            <span class="autor">Abraham Teba Ojeda</span>
+            <span class="curso">2º DAW</span>
+            <span class="instituto">IES Los Alcores</span>
         </div>
+        <h1>Prueba 3: La Feria Antigua de 1441</h1>
     </header>
 
-    <!-- Barra de progreso visual -->
-    <nav class="barra-fases" aria-label="Progreso del juego">
-        <div class="paso-fase completada">
-            <a href="prueba1.php" class="enlace-paso">
-                <span class="paso-numero">✓</span>
-                <span class="paso-texto">Castillo de Luna</span>
-            </a>
-        </div>
-        <div class="paso-fase completada">
-            <a href="prueba2.php" class="enlace-paso">
-                <span class="paso-numero">✓</span>
-                <span class="paso-texto">Antonio Mairena</span>
-            </a>
-        </div>
-        <div class="paso-fase <?php echo $juegoSuperado ? 'completada' : 'activa'; ?>">
-            <span class="paso-numero"><?php echo $juegoSuperado ? '✓' : '3'; ?></span>
-            <span class="paso-texto">Feria de 1441</span>
-        </div>
-    </nav>
+    <main class="contenedor">
+        <div class="caja">
+            <div class="barra-estado">
+                <span>Jugador: <strong><?php echo $nombre; ?></strong></span>
+                <span>Fase: 3 de 3</span>
+            </div>
 
-    <!-- Contenedor central -->
-    <main class="contenedor-principal">
+            <?php if ($juegoTerminado): ?>
+                <!-- pantalla final de victoria cuando acierta la prueba 3 -->
+                <div class="pantalla-final">
+                    <h2>🎉 ¡ENHORABUENA, <?php echo strtoupper($nombre); ?>! 🎉</h2>
+                    <p class="texto-felicidades">¡Has completado el Escape Room y has conseguido salir del Castillo de Luna!</p>
 
-        <?php if ($juegoSuperado): ?>
-            <!-- ========================================== -->
-            <!-- PANTALLA TRIUNFAL DE ESCAPE COMPLETADO      -->
-            <!-- ========================================== -->
-            <section class="tarjeta-sala pantalla-victoria">
-                <div class="insignia-victoria">🏆 ¡ESCAPE ROOM SUPERADO CON ÉXITO!</div>
-                <h2>¡Enhorabuena, <?php echo htmlspecialchars($_SESSION['jugador'], ENT_QUOTES, 'UTF-8'); ?>!</h2>
+                    <div class="resumen-final">
+                        <h3>Resumen cultural aprendido:</h3>
+                        <ul>
+                            <li><strong>Castillo de Luna:</strong> Restaurado en 1902 por el arqueólogo Jorge Bonsor.</li>
+                            <li><strong>Antonio Mairena:</strong> Recibió la III Llave de Oro del Cante en Córdoba en 1962.</li>
+                            <li><strong>Feria de 1441:</strong> La feria más antigua de Andalucía, concedida por el rey Juan II de Castilla a Pedro Ponce de León.</li>
+                        </ul>
+                    </div>
+
+                    <a href="index.php" class="btn">Volver a jugar</a>
+                </div>
+
+            <?php else: ?>
+                <!-- contenido normal de la prueba 3 -->
+                <h2>El enigma del privilegio rodado</h2>
                 
-                <p class="resumen-victoria">
-                    Has demostrado un conocimiento ejemplar del patrimonio, el flamenco y las raíces históricas de 
-                    <strong>Mairena del Alcor</strong>. Gracias a tu ingenio, las puertas del Castillo de Luna se han 
-                    abierto y has logrado salir sano y salvo al exterior.
+                <p>
+                    Has llegado a la última cámara del castillo. Sobre un atril descansa el pergamino que concedió el permiso 
+                    para fundar en Mairena del Alcor la feria más antigua de Andalucía, que comenzó a celebrarse en 1441. 
+                    Para abrir la puerta definitiva a la calle debes responder qué rey de la Corona de Castilla concedió 
+                    dicho privilegio a Pedro Ponce de León.
                 </p>
 
-                <!-- Panel con estadísticas calculadas mediante bucles -->
-                <div class="grid-metricas-victoria">
-                    <div class="caja-metrica">
-                        <span class="metrica-icono">⏱</span>
-                        <span class="metrica-valor"><?php echo calcularTiempoTranscurrido(); ?></span>
-                        <span class="metrica-etiqueta">Tiempo Total Invertido</span>
-                    </div>
-
-                    <div class="caja-metrica">
-                        <span class="metrica-icono">❌</span>
-                        <span class="metrica-valor"><?php echo $totalFallosGlobales; ?></span>
-                        <span class="metrica-etiqueta">Intentos Fallidos Totales</span>
-                    </div>
-
-                    <div class="caja-metrica">
-                        <span class="metrica-icono">💡</span>
-                        <span class="metrica-valor"><?php echo $totalPistasGlobales; ?> / 9</span>
-                        <span class="metrica-etiqueta">Pistas Consultadas</span>
-                    </div>
+                <div class="pregunta-box">
+                    <p><strong>Pregunta:</strong> ¿Qué rey castellano concedió en 1441 el privilegio para la feria de Mairena?</p>
                 </div>
 
-                <!-- Resumen cultural de lo aprendido en el proyecto -->
-                <div class="resumen-cultural-aprendido">
-                    <h3>📚 Cuaderno de Campo Cultural: Mairena del Alcor</h3>
-                    <ul class="lista-hitos-culturales">
-                        <li>
-                            <strong>1. Castillo de Luna:</strong> Fortaleza del siglo XIV de la Casa de Arcos, restaurada con rigor arqueológico en 1902 por el pintor e hispanista anglo-francés <em>Jorge Bonsor</em>.
-                        </li>
-                        <li>
-                            <strong>2. Antonio Mairena:</strong> Cantaor universal y referente del cante jondo gitano-andaluz, galardonado en Córdoba en 1962 con la célebre <em>III Llave de Oro del Cante</em>.
-                        </li>
-                        <li>
-                            <strong>3. Feria de 1441:</strong> La feria más antigua de Andalucía, cuyo privilegio rodado fue otorgado por el rey <em>Juan II de Castilla</em> a Don Pedro Ponce de León.
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="acciones-victoria">
-                    <a href="index.php?accion=reiniciar" class="boton-primario boton-grande">
-                        ↻ Jugar de nuevo con otro aventurero
-                    </a>
-                </div>
-            </section>
-
-        <?php else: ?>
-            <!-- ========================================== -->
-            <!-- PANTALLA DE JUEGO ACTIVA: PRUEBA 3         -->
-            <!-- ========================================== -->
-            <section class="tarjeta-sala">
-                <div class="cabecera-sala">
-                    <span class="etiqueta-enigma">Etapa Final · Desafío 3 de 3</span>
-                    <h2><?php echo htmlspecialchars($enigma['titulo'], ENT_QUOTES, 'UTF-8'); ?></h2>
-                    <h3 class="subtitulo-sala"><?php echo htmlspecialchars($enigma['subtitulo'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                </div>
-
-                <!-- Relato histórico -->
-                <div class="relato-narrativo">
-                    <p><?php echo htmlspecialchars($enigma['relato'], ENT_QUOTES, 'UTF-8'); ?></p>
-                </div>
-
-                <!-- Pregunta del enigma -->
-                <div class="caja-enigma-pregunta">
-                    <h4>👑 Desafío Real Medieval:</h4>
-                    <p class="texto-pregunta"><?php echo htmlspecialchars($enigma['pregunta'], ENT_QUOTES, 'UTF-8'); ?></p>
-                </div>
-
-                <!-- Alertas condicionales -->
-                <?php if (!empty($mensajeError)): ?>
-                    <div class="mensaje-alerta error" role="alert">
-                        ❌ <?php echo $mensajeError; ?>
+                <!-- mensajes -->
+                <?php if (!empty($mensaje)): ?>
+                    <div class="alerta <?php echo $tipoMensaje; ?>">
+                        <?php echo $mensaje; ?>
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty($mensajeInfo)): ?>
-                    <div class="mensaje-alerta info" role="status">
-                        ℹ️ <?php echo htmlspecialchars($mensajeInfo, ENT_QUOTES, 'UTF-8'); ?>
-                    </div>
-                <?php endif; ?>
+                <!-- formulario de envio -->
+                <form action="prueba3.php" method="POST" class="formulario" id="form-prueba">
+                    <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
+                    <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
+                    <input type="hidden" name="pistas" value="<?php echo $pistasPedidas; ?>">
 
-                <!-- Renderizado de medidor de intentos con bucle for -->
-                <?php echo renderizarMedidorIntentosHTML($totalIntentos); ?>
+                    <label for="respuesta">Escribe el nombre del monarca:</label>
+                    <input type="text" name="respuesta" id="respuesta" placeholder="Ej: Juan II...">
 
-                <!-- Sección de pistas con bucle foreach -->
-                <div class="seccion-pistas">
-                    <div class="cabecera-seccion-pistas">
-                        <h4>💡 Pistas sobre la Feria de 1441 (<?php echo $pistasUsadas; ?>/3 desbloqueadas)</h4>
-                        <button type="button" class="boton-secundario boton-alternar-pistas" id="btn-toggle-pistas">
-                            👁 Ver / Ocultar Pistas
-                        </button>
-                    </div>
-
-                    <div class="contenedor-desplegable-pistas" id="caja-pistas-contenido">
-                        <?php echo renderizarListaPistasHTML($enigma['pistas'], $pistasUsadas); ?>
-
-                        <?php if ($pistasUsadas < 3): ?>
-                            <form action="prueba3.php" method="POST" class="form-pista">
-                                <input type="hidden" name="accion" value="pedir_pista">
-                                <button type="submit" class="boton-alerta">
-                                    🔓 Desbloquear siguiente pista
-                                </button>
-                            </form>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <!-- Formulario de respuesta -->
-                <form action="prueba3.php" method="POST" class="formulario-respuesta" id="form-respuesta">
-                    <input type="hidden" name="accion" value="comprobar_respuesta">
-                    
-                    <div class="grupo-campo">
-                        <label for="campo-respuesta">Introduce el nombre del rey de Castilla otorgante en 1441:</label>
-                        <input type="text" 
-                               name="respuesta" 
-                               id="campo-respuesta" 
-                               placeholder="Ej: Juan II de Castilla..." 
-                               required 
-                               autocomplete="off">
-                    </div>
-
-                    <div class="botones-fila">
-                        <button type="submit" class="boton-primario">
-                            🗝 Probar combinación final y escapar
-                        </button>
+                    <div class="botones">
+                        <button type="submit" name="btn_comprobar" class="btn">Comprobar y escapar</button>
+                        <button type="submit" name="btn_pista" class="btn btn-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
                     </div>
                 </form>
 
-                <!-- Historial de fallos con bucle while -->
-                <div class="seccion-historial">
-                    <h4>📜 Registro de sellos reales incorrectos probados:</h4>
-                    <?php echo renderizarHistorialFallosHTML($historial); ?>
+                <!-- pistas pedidas -->
+                <?php if ($pistasPedidas > 0): ?>
+                    <div class="caja-pistas">
+                        <h3>Pistas obtenidas:</h3>
+                        <?php echo mostrarPistas($pistasPrueba3, $pistasPedidas); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- intentos fallidos -->
+                <div class="caja-intentos">
+                    <h3>Historial de intentos:</h3>
+                    <?php echo mostrarMarcadorIntentos($intentos); ?>
                 </div>
 
-                <div class="sala-pie-acciones">
-                    <a href="index.php?accion=reiniciar" class="enlace-reiniciar boton-reiniciar-confirm">
-                        ↻ Rendirse y reiniciar la partida
-                    </a>
+                <div class="enlace-inicio">
+                    <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
                 </div>
 
-            </section>
-        <?php endif; ?>
-
+            <?php endif; ?>
+        </div>
     </main>
 
-    <footer class="pie-pagina">
-        <p>IES Los Alcores · 2º DAW · Desarrollo Web en Entorno Servidor · Escape Room Mairena</p>
+    <!-- pie de pagina -->
+    <footer>
+        <p>EscapeRoom Desarrollo Web en entorno de servidor</p>
     </footer>
 
     <script src="interactividad.js"></script>

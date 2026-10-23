@@ -1,46 +1,5 @@
-/**
- * ============================================================================
- * PROYECTO: ESCAPE ROOM WEB - MAIRENA DEL ALCOR
- * MÓDULO: estilos.css (Hoja de Estilos Única)
- * ALUMNO: 2º DAW - IES Los Alcores (Desarrollo Web en Entorno Servidor)
- * ============================================================================
- * Paleta corporativa IES Los Alcores:
- * - Rojo institucional: #c0292b / #b81c22
- * - Acento y efectos hover: #e67e22 / #f39c12
- * - Fondos oscuros de ambientación Escape Room: #1a1a1a, #222222, #292929
- * - Textos de alto contraste: #ffffff, #f0f0f0, #cccccc
- * Maquetación responsiva limpia basada en CSS Flexbox y CSS Grid nativos.
- */
-
-/* ============================================================================
-   1. RESET Y VARIABLES GENERALES
-   ============================================================================ */
-:root {
-    --color-fondo: #1a1a1a;
-    --color-superficie: #222222;
-    --color-tarjeta: #2a2a2a;
-    --color-borde: #3d3d3d;
-    --color-rojo-alcores: #c0292b;
-    --color-rojo-oscuro: #961e20;
-    --color-naranja-acento: #e67e22;
-    --color-naranja-hover: #d35400;
-    --color-texto-principal: #ffffff;
-    --color-texto-secundario: #cccccc;
-    --color-texto-atenuado: #999999;
-    --color-exito-fondo: #1b3820;
-    --color-exito-texto: #a3e9b0;
-    --color-exito-borde: #2e7d32;
-    --color-error-fondo: #401416;
-    --color-error-texto: #ffb4b6;
-    --color-error-borde: #c0292b;
-    --color-info-fondo: #1c2e3d;
-    --color-info-texto: #a8d5ff;
-    --color-info-borde: #1976d2;
-    --fuente-principal: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --radio-borde: 8px;
-    --sombra-tarjeta: 0 8px 24px rgba(0, 0, 0, 0.6);
-    --sombra-roja: 0 4px 18px rgba(192, 41, 43, 0.35);
-}
+/* hoja de estilos para la practica de escape room */
+/* abraham teba ojeda - 2º daw - ies los alcores */
 
 * {
     margin: 0;
@@ -49,875 +8,350 @@
 }
 
 body {
-    background-color: var(--color-fondo);
-    color: var(--color-texto-principal);
-    font-family: var(--fuente-principal);
-    line-height: 1.6;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* ============================================================================
-   2. ENCABEZADO Y BRANDING DEL INSTITUTO
-   ============================================================================ */
-.cabecera-principal {
+/* cabecera sencilla con el nombre y datos del instituto */
+header {
     background-color: #111111;
-    border-bottom: 3px solid var(--color-rojo-alcores);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-    padding: 1rem 1.5rem;
+    border-bottom: 3px solid #c0292b;
+    padding: 15px 20px;
+    text-align: center;
 }
 
-.contenedor-cabecera {
-    max-width: 1080px;
-    margin: 0 auto;
+.cabecera-info {
+    font-size: 0.9em;
+    color: #cccccc;
+    margin-bottom: 5px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.logo-instituto {
-    display: flex;
-    flex-direction: column;
-}
-
-.siglas-instituto {
-    font-size: 1.3rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--color-rojo-alcores);
-}
-
-.ciclo-daw {
-    font-size: 0.85rem;
-    color: var(--color-texto-atenuado);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.titulo-escape h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-texto-principal);
-    text-align: right;
-}
-
-.subtitulo-escape {
-    font-size: 0.85rem;
-    color: var(--color-naranja-acento);
-    text-align: right;
-}
-
-.barra-estado-jugador {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    background-color: #1b1b1b;
-    padding: 0.4rem 0.9rem;
-    border-radius: var(--radio-borde);
-    border: 1px solid var(--color-borde);
-}
-
-.info-jugador {
-    font-size: 0.95rem;
-    color: var(--color-texto-secundario);
-}
-
-.info-jugador strong {
-    color: var(--color-naranja-acento);
-}
-
-.cronometro {
-    font-size: 0.9rem;
-    color: #ffd166;
-    font-weight: 600;
-    background: #2b2b1a;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    border: 1px solid #7d6b1d;
-}
-
-/* ============================================================================
-   3. BARRA DE NAVEGACIÓN DE FASES (STEPPER)
-   ============================================================================ */
-.barra-fases {
-    max-width: 1080px;
-    margin: 1.2rem auto 0;
-    padding: 0 1rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 0.8rem;
-}
-
-.paso-fase {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 1rem;
-    background: var(--color-superficie);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    transition: all 0.2s ease;
-}
-
-.paso-fase a.enlace-paso {
-    color: inherit;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    width: 100%;
-}
-
-.paso-numero {
-    width: 28px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: 0.85rem;
-    background-color: #333333;
-    color: var(--color-texto-secundario);
+    gap: 15px;
 }
 
-.paso-texto {
-    font-size: 0.9rem;
-    font-weight: 600;
+.cabecera-info .instituto {
+    color: #e67e22;
+    font-weight: bold;
 }
 
-/* Estado activo: fase en la que se encuentra el jugador */
-.paso-fase.activa {
-    background: #2a1818;
-    border-color: var(--color-rojo-alcores);
-    box-shadow: var(--sombra-roja);
-}
-
-.paso-fase.activa .paso-numero {
-    background-color: var(--color-rojo-alcores);
+header h1 {
+    font-size: 1.5em;
     color: #ffffff;
 }
 
-.paso-fase.activa .paso-texto {
-    color: #ffffff;
-}
-
-/* Estado completado */
-.paso-fase.completada {
-    border-color: #2e7d32;
-    background: #152518;
-}
-
-.paso-fase.completada .paso-numero {
-    background-color: #2e7d32;
-    color: #ffffff;
-}
-
-.paso-fase.desbloqueada {
-    border-color: var(--color-naranja-acento);
-}
-
-.paso-fase.bloqueada {
-    opacity: 0.5;
-}
-
-/* ============================================================================
-   4. CONTENEDOR PRINCIPAL Y TARJETAS
-   ============================================================================ */
-.contenedor-principal {
-    max-width: 960px;
-    width: 100%;
-    margin: 1.5rem auto;
-    padding: 0 1rem;
+/* contenedor principal y caja de juego */
+.contenedor {
+    width: 90%;
+    max-width: 800px;
+    margin: 25px auto;
     flex: 1;
 }
 
-.tarjeta-portada,
-.tarjeta-sala {
-    background-color: var(--color-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 2.2rem;
-    box-shadow: var(--sombra-tarjeta);
-    position: relative;
-    overflow: hidden;
+.caja {
+    background-color: #242424;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    padding: 25px;
 }
 
-.tarjeta-portada::before,
-.tarjeta-sala::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--color-rojo-alcores), var(--color-naranja-acento));
-}
-
-.insignia-fase,
-.etiqueta-enigma {
-    display: inline-block;
-    background-color: var(--color-rojo-alcores);
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0.3rem 0.8rem;
+.barra-estado {
+    display: flex;
+    justify-content: space-between;
+    background-color: #1a1a1a;
+    padding: 8px 12px;
     border-radius: 4px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    border-left: 3px solid #c0292b;
 }
 
 h2 {
-    font-size: 1.8rem;
     color: #ffffff;
-    margin-bottom: 0.4rem;
+    font-size: 1.4em;
+    margin-bottom: 10px;
 }
 
-.subtitulo-sala {
-    font-size: 1.05rem;
-    color: var(--color-naranja-acento);
-    margin-bottom: 1.4rem;
-    font-weight: 500;
+h3 {
+    color: #e67e22;
+    font-size: 1.1em;
+    margin-bottom: 8px;
 }
 
-.texto-introductorio,
-.texto-narrativo {
-    color: var(--color-texto-secundario);
-    font-size: 1.05rem;
-    margin-bottom: 1.2rem;
+p {
+    color: #dddddd;
+    margin-bottom: 15px;
 }
 
-.texto-narrativo em {
-    color: #ffd166;
-    font-style: italic;
-}
-
-/* ============================================================================
-   5. GRID DE PREVIEW DE FASES (INDEX)
-   ============================================================================ */
-.grid-fases-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem;
-    margin: 2rem 0;
-}
-
-.tarjeta-fase-item {
-    background: var(--color-superficie);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.4rem;
-    position: relative;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.tarjeta-fase-item:hover {
-    transform: translateY(-3px);
-    border-color: var(--color-naranja-acento);
-}
-
-.numero-etapa {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 32px;
-    height: 32px;
-    background: var(--color-rojo-alcores);
-    border-radius: 50%;
+/* tarjetas resumen del index */
+.resumen-pruebas {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.95rem;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
 }
 
-.tarjeta-fase-item h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.5rem;
+.tarjeta-prueba {
+    flex: 1;
+    min-width: 200px;
+    background-color: #1f1f1f;
+    border: 1px solid #3a3a3a;
+    border-top: 3px solid #c0292b;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.tarjeta-prueba h3 {
+    color: #ffffff;
+    font-size: 1em;
+}
+
+.tarjeta-prueba p {
+    font-size: 0.85em;
+    color: #aaaaaa;
+    margin-bottom: 0;
+}
+
+/* caja destacada con la pregunta */
+.pregunta-box {
+    background-color: #2e261f;
+    border: 1px solid #e67e22;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.pregunta-box p {
+    margin-bottom: 0;
     color: #ffffff;
 }
 
-.tarjeta-fase-item p {
-    font-size: 0.9rem;
-    color: var(--color-texto-secundario);
-}
-
-/* ============================================================================
-   6. CAJAS DE ENIGMA Y RELATO
-   ============================================================================ */
-.relato-narrativo {
-    background: #1f1f1f;
-    border-left: 4px solid var(--color-rojo-alcores);
-    padding: 1.2rem 1.4rem;
-    border-radius: 0 var(--radio-borde) var(--radio-borde) 0;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-    color: #e5e5e5;
-}
-
-.caja-enigma-pregunta {
-    background: #25201a;
-    border: 2px dashed var(--color-naranja-acento);
-    border-radius: var(--radio-borde);
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 1.6rem;
-}
-
-.caja-enigma-pregunta h4 {
-    color: var(--color-naranja-acento);
-    font-size: 1.05rem;
-    margin-bottom: 0.4rem;
-}
-
-.texto-pregunta {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-/* ============================================================================
-   7. FORMULARIOS, CAMPOS Y BOTONES
-   ============================================================================ */
-.formulario-inicio,
-.formulario-respuesta {
-    margin-top: 1.5rem;
-}
-
-.grupo-campo {
-    margin-bottom: 1.2rem;
-    display: flex;
-    flex-direction: column;
+/* formularios y campos */
+.formulario {
+    margin-top: 15px;
 }
 
 label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-texto-principal);
+    display: block;
+    margin-bottom: 6px;
+    color: #ffffff;
+    font-size: 0.95em;
 }
 
 input[type="text"] {
-    background-color: #171717;
-    border: 2px solid var(--color-borde);
+    width: 100%;
+    padding: 10px;
+    background-color: #181818;
+    border: 1px solid #444444;
+    border-radius: 4px;
     color: #ffffff;
-    font-size: 1.05rem;
-    padding: 0.85rem 1rem;
-    border-radius: var(--radio-borde);
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1em;
+    margin-bottom: 15px;
 }
 
 input[type="text"]:focus {
-    border-color: var(--color-naranja-acento);
-    box-shadow: 0 0 10px rgba(230, 126, 34, 0.4);
+    outline: none;
+    border-color: #e67e22;
 }
 
-input[type="text"]::placeholder {
-    color: #777777;
-}
-
-.ayuda-campo {
-    font-size: 0.8rem;
-    color: var(--color-texto-atenuado);
-    margin-top: 0.3rem;
-}
-
-.botones-fila {
+/* botones con los colores del instituto */
+.botones {
     display: flex;
-    gap: 1rem;
-    align-items: center;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
-/* Botón Primario: Rojo corporativo con hover naranja */
-.boton-primario {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: var(--color-rojo-alcores);
+.btn {
+    background-color: #c0292b;
     color: #ffffff;
     border: none;
-    padding: 0.9rem 1.6rem;
-    border-radius: var(--radio-borde);
-    font-size: 1rem;
-    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 0.95em;
     cursor: pointer;
+    font-weight: bold;
     text-decoration: none;
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    box-shadow: var(--sombra-roja);
+    display: inline-block;
 }
 
-.boton-primario:hover {
-    background-color: var(--color-naranja-acento);
-    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.45);
-    transform: translateY(-1px);
+.btn:hover {
+    background-color: #e67e22;
 }
 
-.boton-primario:active {
-    transform: translateY(1px);
+.btn-secundario {
+    background-color: #383838;
 }
 
-.boton-primario.ancho-completo {
-    width: 100%;
+.btn-secundario:hover {
+    background-color: #4a4a4a;
 }
 
-.boton-primario.boton-grande {
-    padding: 1.1rem 2rem;
-    font-size: 1.1rem;
+/* alertas de exito y error */
+.alerta {
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.95em;
 }
 
-/* Botón Secundario */
-.boton-secundario {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #333333;
-    color: var(--color-texto-principal);
-    border: 1px solid var(--color-borde);
-    padding: 0.75rem 1.2rem;
-    border-radius: var(--radio-borde);
-    font-size: 0.9rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
+.alerta.exito {
+    background-color: #1d3820;
+    border: 1px solid #2e7d32;
+    color: #a5e6ad;
 }
 
-.boton-secundario:hover {
-    background-color: #444444;
+.alerta.error {
+    background-color: #3d1b1c;
+    border: 1px solid #c0292b;
+    color: #ffb8b8;
 }
 
-/* Botón Alerta / Pista */
-.boton-alerta {
-    display: inline-flex;
-    align-items: center;
-    background-color: #3f2a15;
-    color: #ffd166;
-    border: 1px solid #7d5718;
-    padding: 0.65rem 1.1rem;
-    border-radius: var(--radio-borde);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 0.8rem;
+.alerta.info {
+    background-color: #1e2c38;
+    border: 1px solid #1976d2;
+    color: #b0d7ff;
 }
 
-.boton-alerta:hover {
-    background-color: #5a3c1c;
-    border-color: #ffd166;
+/* zona de avance a la siguiente fase */
+.zona-siguiente {
+    background-color: #1b2e1e;
+    border: 1px solid #2e7d32;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+    text-align: center;
 }
 
-/* ============================================================================
-   8. ALERTAS DINÁMICAS (ÉXITO, ERROR, INFO)
-   ============================================================================ */
-.mensaje-alerta {
-    padding: 1rem 1.2rem;
-    border-radius: var(--radio-borde);
-    margin: 1.2rem 0;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+/* lista de pistas desbloqueadas */
+.caja-pistas {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
 }
 
-.mensaje-alerta.exito {
-    background-color: var(--color-exito-fondo);
-    color: var(--color-exito-texto);
-    border: 1px solid var(--color-exito-borde);
+.item-pista {
+    background-color: #29241b;
+    border-left: 3px solid #e67e22;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: #f0e2cc;
 }
 
-.mensaje-alerta.error {
-    background-color: var(--color-error-fondo);
-    color: var(--color-error-texto);
-    border: 1px solid var(--color-error-borde);
-}
-
-.mensaje-alerta.info {
-    background-color: var(--color-info-fondo);
-    color: var(--color-info-texto);
-    border: 1px solid var(--color-info-borde);
-}
-
-/* ============================================================================
-   9. INDICADORES DE INTENTOS (BUCLE FOR)
-   ============================================================================ */
-.medidor-intentos {
-    background: #181818;
-    border: 1px solid var(--color-borde);
-    padding: 0.9rem 1.2rem;
-    border-radius: var(--radio-borde);
-    margin: 1.2rem 0;
-}
-
-.etiqueta-intentos {
-    font-size: 0.9rem;
-    color: var(--color-texto-secundario);
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.etiqueta-intentos strong {
-    color: #ff7575;
+/* caja con el contador de intentos */
+.caja-intentos {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-size: 0.9em;
 }
 
 .marcas-intentos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    align-items: center;
+    margin-top: 6px;
 }
 
-.marca-intento {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-weight: 600;
-}
-
-.marca-intento.sin-fallos {
-    background: #19361e;
-    color: #8be49b;
-    border: 1px solid #2e7d32;
-}
-
-.marca-intento.fallo {
-    background: #3b1416;
-    color: #ff9e9e;
-    border: 1px solid #c0292b;
-}
-
-.marca-intento.extra {
-    background: #2b2b2b;
-    color: #cccccc;
-}
-
-/* ============================================================================
-   10. SISTEMA DE PISTAS PROGRESSIVAS (BUCLE FOREACH)
-   ============================================================================ */
-.seccion-pistas {
-    background: var(--color-superficie);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.2rem;
-    margin: 1.4rem 0;
-}
-
-.cabecera-seccion-pistas {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-}
-
-.cabecera-seccion-pistas h4 {
-    font-size: 1rem;
-    color: #ffffff;
-}
-
-.contenedor-desplegable-pistas {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.pista-caja {
-    border-radius: var(--radio-borde);
-    padding: 0.9rem 1.1rem;
-    font-size: 0.92rem;
-}
-
-.pista-caja.desbloqueada {
-    background: #2b2315;
-    border: 1px solid #b3741b;
-}
-
-.pista-caja.desbloqueada .pista-cabecera {
-    color: #ffd166;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-}
-
-.pista-caja.desbloqueada .pista-cuerpo {
-    color: #f7eed8;
-}
-
-.pista-caja.bloqueada {
-    background: #191919;
-    border: 1px dashed #444444;
-    opacity: 0.65;
-}
-
-.pista-caja.bloqueada .pista-cabecera {
-    color: #888888;
-    font-weight: 600;
-}
-
-.pista-caja.bloqueada .pista-cuerpo {
-    color: #777777;
-    font-size: 0.85rem;
-}
-
-/* ============================================================================
-   11. HISTORIAL DE FALLOS (BUCLE WHILE)
-   ============================================================================ */
-.seccion-historial {
-    margin-top: 2rem;
-    padding-top: 1.2rem;
-    border-top: 1px solid var(--color-borde);
-}
-
-.seccion-historial h4 {
-    font-size: 0.95rem;
-    color: var(--color-texto-atenuado);
-    margin-bottom: 0.7rem;
-}
-
-.lista-fallos {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.lista-fallos li {
-    font-size: 0.88rem;
-    color: #ff9e9e;
-    background: #251819;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    border-left: 3px solid var(--color-rojo-alcores);
-}
-
-.lista-fallos code {
-    background: #141414;
-    color: #ffffff;
-    padding: 0.1rem 0.4rem;
-    border-radius: 3px;
-    font-family: monospace;
-}
-
-.sin-historial {
-    font-size: 0.88rem;
-    color: var(--color-texto-atenuado);
-    font-style: italic;
-}
-
-/* ============================================================================
-   12. PANTALLA TRIUNFAL DE VICTORIA
-   ============================================================================ */
-.pantalla-victoria {
-    text-align: center;
-    border-color: #2e7d32;
-    box-shadow: 0 0 30px rgba(46, 125, 50, 0.4);
-}
-
-.insignia-victoria {
+.marca-fallo {
     display: inline-block;
-    background: linear-gradient(90deg, #2e7d32, #43a047);
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 0.9rem;
-    padding: 0.5rem 1.4rem;
-    border-radius: 20px;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    background-color: #3b181a;
+    color: #ff9999;
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.85em;
 }
 
-.resumen-victoria {
-    font-size: 1.15rem;
-    color: #e0e0e0;
-    max-width: 720px;
-    margin: 1rem auto 2rem;
+.sin-fallos {
+    color: #888888;
+    font-style: italic;
+    margin-bottom: 0;
 }
 
-.grid-metricas-victoria {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.2rem;
-    margin-bottom: 2.2rem;
-}
-
-.caja-metrica {
-    background: var(--color-superficie);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.4rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.metrica-icono {
-    font-size: 2rem;
-}
-
-.metrica-valor {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #ffd166;
-}
-
-.metrica-etiqueta {
-    font-size: 0.85rem;
-    color: var(--color-texto-secundario);
-    text-transform: uppercase;
-}
-
-.resumen-cultural-aprendido {
-    background: #1d1d1d;
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.5rem;
-    text-align: left;
-    margin-bottom: 2rem;
-}
-
-.resumen-cultural-aprendido h3 {
-    font-size: 1.1rem;
-    color: var(--color-naranja-acento);
-    margin-bottom: 1rem;
-}
-
-.lista-hitos-culturales {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.lista-hitos-culturales li {
-    font-size: 0.95rem;
-    color: #cccccc;
-    line-height: 1.5;
-    padding-left: 1.2rem;
-    position: relative;
-}
-
-.lista-hitos-culturales li::before {
-    content: "◈";
-    position: absolute;
-    left: 0;
-    color: var(--color-rojo-alcores);
-}
-
-.lista-hitos-culturales strong {
-    color: #ffffff;
-}
-
-/* ============================================================================
-   13. PIE DE PÁGINA Y ACCIONES SECUNDARIAS
-   ============================================================================ */
-.zona-siguiente-fase {
-    background: #172d1a;
-    border: 2px solid #2e7d32;
-    border-radius: var(--radio-borde);
-    padding: 1.5rem;
+/* pantalla final */
+.pantalla-final {
     text-align: center;
-    margin: 1.5rem 0;
+    padding: 15px 0;
+}
+
+.pantalla-final h2 {
+    color: #e67e22;
 }
 
 .texto-felicidades {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #a3e9b0;
-    margin-bottom: 1rem;
+    font-size: 1.1em;
+    color: #ffffff;
 }
 
-.sala-pie-acciones {
-    margin-top: 2rem;
+.resumen-final {
+    text-align: left;
+    background-color: #1e1e1e;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+    border: 1px solid #333333;
+}
+
+.resumen-final ul {
+    margin-left: 20px;
+    color: #cccccc;
+}
+
+.resumen-final li {
+    margin-bottom: 8px;
+}
+
+/* enlace para volver al inicio */
+.enlace-inicio {
+    margin-top: 20px;
     text-align: right;
 }
 
-.enlace-reiniciar {
+.btn-enlace {
     color: #888888;
-    font-size: 0.85rem;
+    font-size: 0.85em;
     text-decoration: underline;
-    transition: color 0.2s ease;
 }
 
-.enlace-reiniciar:hover {
-    color: #ff6b6b;
+.btn-enlace:hover {
+    color: #c0292b;
 }
 
-.caja-reanudacion {
-    background: #2d1e15;
-    border: 1px solid var(--color-naranja-acento);
-    border-radius: var(--radio-borde);
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.caja-reanudacion h3 {
-    color: #ffd166;
-    margin-bottom: 0.5rem;
-}
-
-.caja-reanudacion p {
-    color: #e5e5e5;
-    margin-bottom: 1.2rem;
-}
-
-.pie-pagina {
+/* pie de pagina */
+footer {
     background-color: #111111;
-    border-top: 1px solid var(--color-borde);
-    padding: 1.4rem;
+    border-top: 1px solid #292929;
+    padding: 12px;
     text-align: center;
-    font-size: 0.82rem;
-    color: var(--color-texto-atenuado);
+    font-size: 0.85em;
+    color: #888888;
     margin-top: auto;
 }
 
-/* ============================================================================
-   14. MEDIA QUERIES (DISEÑO RESPONSIVO)
-   ============================================================================ */
-@media (max-width: 768px) {
-    .contenedor-cabecera {
+/* responsive sencillo para movil */
+@media (max-width: 600px) {
+    .cabecera-info {
         flex-direction: column;
-        align-items: flex-start;
+        gap: 2px;
     }
 
-    .titulo-escape h1,
-    .subtitulo-escape {
-        text-align: left;
-    }
-
-    .barra-estado-jugador {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .barra-fases {
+    .resumen-pruebas {
         flex-direction: column;
-        gap: 0.4rem;
     }
 
-    .tarjeta-portada,
-    .tarjeta-sala {
-        padding: 1.5rem 1.2rem;
-    }
-
-    h2 {
-        font-size: 1.4rem;
-    }
-
-    .botones-fila {
+    .botones {
         flex-direction: column;
-        width: 100%;
     }
 
-    .boton-primario,
-    .boton-secundario {
+    .btn {
         width: 100%;
+        text-align: center;
     }
 }

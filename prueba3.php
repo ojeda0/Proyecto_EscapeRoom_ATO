@@ -25,7 +25,7 @@ $pistasPrueba3 = [
 ];
 
 // comprobamos si el usuario ha pulsado el boton de pedirpista
-if (isset($_POST['btn_pista'])) {
+if (isset($_POST['boton_pista'])) {
 
     if ($pistasPedidas < count($pistasPrueba3)) {
 
@@ -43,7 +43,7 @@ if (isset($_POST['btn_pista'])) {
 }
 
 // comprobamos si el usuario envia una respuesta
-if (isset($_POST['btn_comprobar'])) {
+if (isset($_POST['boton_comprobar'])) {
 
     $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
 
@@ -113,7 +113,7 @@ if (isset($_POST['btn_comprobar'])) {
                         </ul>
                     </div>
 
-                    <a href="index.php" class="btn">Volver a jugar</a>
+                    <a href="index.php" class="boton">Volver a jugar</a>
                 </div>
 
             <?php else: ?>
@@ -125,7 +125,7 @@ if (isset($_POST['btn_comprobar'])) {
                     Castilla concedió este privilegio a Pedro Ponce de León.
                 </p>
 
-                <div class="pregunta-box">
+                <div class="caja-pregunta">
                     <p><strong>Pregunta:</strong> ¿Qué rey castellano concedió en 1441 el privilegio para la feria de Mairena?</p>
                 </div>
 
@@ -137,7 +137,7 @@ if (isset($_POST['btn_comprobar'])) {
                 <?php endif; ?>
 
                 <!-- formulario de respuesta -->
-                <form action="prueba3.php" method="POST" class="formulario" id="form-prueba">
+                <form action="prueba3.php" method="POST" class="formulario" id="formulario-prueba">
                     <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
                     <input type="hidden" name="pistas" value="<?php echo $pistasPedidas; ?>">
@@ -146,8 +146,8 @@ if (isset($_POST['btn_comprobar'])) {
                     <input type="text" name="respuesta" id="respuesta" placeholder="Ej: Juan II...">
 
                     <div class="botones">
-                        <button type="submit" name="btn_comprobar" class="btn">Comprobar y escapar</button>
-                        <button type="submit" name="btn_pista" class="btn btn-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
+                        <button type="submit" name="boton_comprobar" class="boton">Comprobar y escapar</button>
+                        <button type="submit" name="boton_pista" class="boton boton-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
                     </div>
                 </form>
 
@@ -159,7 +159,7 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- intentos fallido -->
+                <!-- intentos fallidos -->
                 <div class="caja-intentos">
                     <h3>Historial de intentos:</h3>
                     <?php echo mostrarMarcadorIntentos($intentos); ?>
@@ -167,7 +167,7 @@ if (isset($_POST['btn_comprobar'])) {
 
                 <!-- volver al inicio -->
                 <div class="enlace-inicio">
-                    <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
+                    <a href="index.php" class="boton-enlace" id="boton-salir">Abandonar y volver al inicio</a>
                 </div>
 
             <?php endif; ?>

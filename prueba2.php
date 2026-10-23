@@ -25,7 +25,7 @@ $pistasPrueba2 = [
 ];
 
 // comprobamos si el usuario ha pulsado el boton de pedir pista
-if (isset($_POST['btn_pista'])) {
+if (isset($_POST['boton_pista'])) {
 
     if ($pistasPedidas < count($pistasPrueba2)) {
 
@@ -43,7 +43,7 @@ if (isset($_POST['btn_pista'])) {
 }
 
 // comprobamos si el usuario envia una respuesta
-if (isset($_POST['btn_comprobar'])) {
+if (isset($_POST['boton_comprobar'])) {
 
     $respuesta = isset($_POST['respuesta']) ? limpiarTexto($_POST['respuesta']) : '';
 
@@ -106,7 +106,7 @@ if (isset($_POST['btn_comprobar'])) {
                 ganó en Córdoba en 1962.
             </p>
 
-            <div class="pregunta-box">
+            <div class="caja-pregunta">
                 <p><strong>Pregunta:</strong> ¿Qué histórico galardón flamenco recibió Antonio Mairena en 1962?</p>
             </div>
 
@@ -125,12 +125,12 @@ if (isset($_POST['btn_comprobar'])) {
                         <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                         <input type="hidden" name="intentos" value="0">
                         <input type="hidden" name="pistas" value="0">
-                        <button type="submit" class="btn">Ir a la Prueba 3 (La Feria de 1441)</button>
+                        <button type="submit" class="boton">Ir a la Prueba 3 (La Feria de 1441)</button>
                     </form>
                 </div>
             <?php else: ?>
                 <!-- formulario de respuesta -->
-                <form action="prueba2.php" method="POST" class="formulario" id="form-prueba">
+                <form action="prueba2.php" method="POST" class="formulario" id="formulario-prueba">
                     <input type="hidden" name="nombre" value="<?php echo $nombre; ?>">
                     <input type="hidden" name="intentos" value="<?php echo $intentos; ?>">
                     <input type="hidden" name="pistas" value="<?php echo $pistasPedidas; ?>">
@@ -139,8 +139,8 @@ if (isset($_POST['btn_comprobar'])) {
                     <input type="text" name="respuesta" id="respuesta" placeholder="Ej: Llave de oro del cante...">
 
                     <div class="botones">
-                        <button type="submit" name="btn_comprobar" class="btn">Comprobar respuesta</button>
-                        <button type="submit" name="btn_pista" class="btn btn-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
+                        <button type="submit" name="boton_comprobar" class="boton">Comprobar respuesta</button>
+                        <button type="submit" name="boton_pista" class="boton boton-secundario">Pedir pista (<?php echo $pistasPedidas; ?>/3)</button>
                     </div>
                 </form>
             <?php endif; ?>
@@ -161,12 +161,12 @@ if (isset($_POST['btn_comprobar'])) {
 
             <!-- volver al inicio -->
             <div class="enlace-inicio">
-                <a href="index.php" class="btn-enlace" id="btn-salir">Abandonar y volver al inicio</a>
+                <a href="index.php" class="boton-enlace" id="boton-salir">Abandonar y volver al inicio</a>
             </div>
         </div>
     </main>
 
-    <!-- pie de página -->
+    <!-- pie de pagina -->
     <footer>
         <p>EscapeRoom - Desarrollo Web en Entorno de Servidor - Abraham Teba Ojeda</p>
     </footer>

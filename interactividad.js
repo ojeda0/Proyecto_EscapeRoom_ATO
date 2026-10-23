@@ -16,17 +16,17 @@ window.addEventListener('load', function() {
     }
 
     // confirmacion para volver al inicio
-    var btnSalir = document.getElementById('btn-salir');
+    var botonSalir = document.getElementById('boton-salir');
 
-    if (btnSalir) {
+    if (botonSalir) {
 
-        btnSalir.addEventListener('click', function(e) {
+        botonSalir.addEventListener('click', function(evento) {
 
             var seguro = confirm("¿Seguro que quieres salir y volver al inicio?");
 
             if (!seguro) {
 
-                e.preventDefault();
+                evento.preventDefault();
 
             }
 
@@ -34,20 +34,20 @@ window.addEventListener('load', function() {
 
     }
 
-    // comprobar que no se envie vacío
-    var formPrueba = document.getElementById('form-prueba');
+    // comprobar que no se envie vacio
+    var formularioPrueba = document.getElementById('formulario-prueba');
 
-    if (formPrueba && campoRespuesta) {
+    if (formularioPrueba && campoRespuesta) {
 
-        formPrueba.addEventListener('submit', function(e) {
+        formularioPrueba.addEventListener('submit', function(evento) {
 
             var botonPulsado = document.activeElement;
 
-            if (botonPulsado && botonPulsado.name === 'btn_comprobar') {
+            if (botonPulsado && botonPulsado.name === 'boton_comprobar') {
 
                 if (campoRespuesta.value.trim() === '') {
 
-                    e.preventDefault();
+                    evento.preventDefault();
                     alert("Escribe una respuesta antes de comprobar.");
                     campoRespuesta.focus();
 

@@ -43,14 +43,14 @@
             </div>
 
             <!-- formulario de inicio -->
-            <form action="prueba1.php" method="POST" class="formulario" id="form-inicio">
+            <form action="prueba1.php" method="POST" class="formulario" id="formulario-inicio">
                 <label for="nombre">Introduce tu nombre:</label>
                 <input type="text" name="nombre" id="nombre" placeholder="Tu nombre..." required>
 
                 <input type="hidden" name="intentos" value="0">
                 <input type="hidden" name="pistas" value="0">
 
-                <button type="submit" class="btn">Empezar Escape Room</button>
+                <button type="submit" class="boton">Empezar Escape Room</button>
             </form>
         </div>
     </main>

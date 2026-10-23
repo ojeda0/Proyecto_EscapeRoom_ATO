@@ -40,7 +40,7 @@ function mostrarPistas($arrayPistas, $totalPistasPedidas){
         if (isset($arrayPistas[$i])) {
 
             $numero = $i + 1;
-            $salida .= "<div class='item-pista'>";
+            $salida .= "<div class='elemento-pista'>";
             $salida .= "<strong>Pista " . $numero . ":</strong> " . $arrayPistas[$i];
             $salida .= "</div>";
 
@@ -53,9 +53,9 @@ function mostrarPistas($arrayPistas, $totalPistasPedidas){
 }
 
 // funcion para pintar los fallos acumulados
-function mostrarMarcadorIntentos($numIntentos){
+function mostrarMarcadorIntentos($numeroIntentos){
 
-    if ($numIntentos == 0) {
+    if ($numeroIntentos == 0) {
 
         return "<p class='sin-fallos'>Sin fallos por ahora.</p>";
 
@@ -64,7 +64,7 @@ function mostrarMarcadorIntentos($numIntentos){
     $salida = "<div class='marcas-intentos'>";
     $contador = 1;
 
-    while ($contador <= $numIntentos) {
+    while ($contador <= $numeroIntentos) {
 
         $salida .= "<span class='marca-fallo'>Fallo " . $contador . "</span> ";
         $contador++;

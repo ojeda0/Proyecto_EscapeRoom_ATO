@@ -105,7 +105,7 @@ p {
     margin-bottom: 0;
 }
 
-/* caja con la pregunta */
+/* caja con la preguta */
 .pregunta-box {
     background-color: #2e261f;
     border: 1px solid #e67e22;
@@ -327,7 +327,7 @@ footer p {
     text-align: center;
 }
 
-/* responsive */
+/* responsive*/
 @media (max-width: 600px) {
     .resumen-pruebas {
         flex-direction: column;

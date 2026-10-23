@@ -24,7 +24,7 @@ $pistasPrueba3 = [
     "La respuesta es: Juan II (o Juan II de Castilla)."
 ];
 
-// comprobamos si el usuario ha pulsado el boton de pedir pista
+// comprobamos si el usuario ha pulsado el boton de pedirpista
 if (isset($_POST['btn_pista'])) {
 
     if ($pistasPedidas < count($pistasPrueba3)) {
@@ -159,7 +159,7 @@ if (isset($_POST['btn_comprobar'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- intentos fallidos -->
+                <!-- intentos fallido -->
                 <div class="caja-intentos">
                     <h3>Historial de intentos:</h3>
                     <?php echo mostrarMarcadorIntentos($intentos); ?>

@@ -166,7 +166,7 @@ if (isset($_POST['btn_comprobar'])) {
         </div>
     </main>
 
-    <!-- pie de pagina -->
+    <!-- pie de página -->
     <footer>
         <p>EscapeRoom - Desarrollo Web en Entorno de Servidor - Abraham Teba Ojeda</p>
     </footer>
